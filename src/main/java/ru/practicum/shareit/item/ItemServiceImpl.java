@@ -9,10 +9,8 @@ import ru.practicum.shareit.request.RequestService;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.user.model.User;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static ru.practicum.shareit.item.ItemMapper.toItem;
 import static ru.practicum.shareit.item.ItemMapper.toItemDto;
 import static ru.practicum.shareit.request.RequestMapper.toRequest;
