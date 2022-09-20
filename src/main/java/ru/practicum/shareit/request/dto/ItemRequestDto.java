@@ -9,8 +9,9 @@ import javax.validation.constraints.NotBlank;
  * TODO Sprint add-item-requests.
  */
 
- @Data
+
 @AllArgsConstructor
+@Data
 public class ItemRequestDto {
     private Long id;
     @NotBlank
