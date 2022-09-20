@@ -6,25 +6,25 @@ import ru.practicum.shareit.user.model.User;
 import java.util.*;
 
 @Repository
-public class UserStorageImpl implements UserStorage{
+public class UserStorageImpl implements UserStorage {
 
-    private final Map<Long,User> users=new HashMap<>();
+    private final Map<Long, User> users = new HashMap<>();
 
     @Override
     public User addUser(User user) {
-        users.put(user.getId(),user);
+        users.put(user.getId(), user);
         return user;
     }
 
     @Override
     public Optional<User> updateUser(User user) {
-        if (users.containsKey(user.getId())){
+        if (!users.containsKey(user.getId())) {
             return Optional.empty();
-        }else {
-            if (user.getName()!=null){
+        } else {
+            if (user.getName() != null) {
                 users.get(user.getId()).setName(user.getName());
             }
-            if (user.getEmail()!=null){
+            if (user.getEmail() != null) {
                 users.get(user.getId()).setEmail(user.getEmail());
             }
             return Optional.ofNullable(users.get(user.getId()));
@@ -38,9 +38,9 @@ public class UserStorageImpl implements UserStorage{
 
     @Override
     public Optional<User> getUserById(long id) {
-        if (!users.containsKey(id)){
+        if (!users.containsKey(id)) {
             return Optional.empty();
-        }else {
+        } else {
             return Optional.ofNullable(users.get(id));
         }
     }
@@ -48,5 +48,9 @@ public class UserStorageImpl implements UserStorage{
     @Override
     public List<User> getUsers() {
         return new ArrayList<>(users.values());
+    }
+
+    public boolean emailExistingCheck(String email) {
+        return users.values().stream().anyMatch(user -> user.getEmail().equals(email));
     }
 }

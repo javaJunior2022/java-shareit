@@ -5,6 +5,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.validation.Create;
+import ru.practicum.shareit.validation.Update;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * TODO Sprint add-controllers.
@@ -13,7 +17,7 @@ import ru.practicum.shareit.validation.Create;
 @RequestMapping("/items")
 @AllArgsConstructor
 public class ItemController {
-
+    private final ItemService itemService;
     @PostMapping
     ItemDto addItem(@RequestHeader("X-Sharer-User-Id") long userId,
                     @RequestBody @Validated(Create.class) ItemDto item) {
