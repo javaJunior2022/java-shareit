@@ -7,10 +7,15 @@ import java.util.Optional;
 
 public interface UserStorage {
     User addUser(User user);
+
     Optional<User> updateUser(User user);
+
     void deleteUserById(long id);
+
     Optional<User> getUserById(long id);
+
     List<User> getUsers();
+
     boolean emailExistingCheck(String email);
 
 

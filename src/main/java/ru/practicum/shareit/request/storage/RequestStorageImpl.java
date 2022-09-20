@@ -8,7 +8,7 @@ import java.util.*;
 
 @Slf4j
 @Repository
-public class RequestStorageImpl implements RequestStorage{
+public class RequestStorageImpl implements RequestStorage {
     private final Map<Long, Map<Long, ItemRequest>> storage = new HashMap<>();
 
     @Override
@@ -18,7 +18,7 @@ public class RequestStorageImpl implements RequestStorage{
         } else {
             storage.put(userId, Map.of(itemRequest.getId(), itemRequest));
         }
-       return itemRequest;
+        return itemRequest;
     }
 
     @Override

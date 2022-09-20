@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
+
     @PostMapping
     public UserDto addUser(@RequestBody @Validated(Create.class) UserDto userDto) {
         return userService.addUser(userDto);
