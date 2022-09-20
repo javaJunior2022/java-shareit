@@ -9,23 +9,23 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Repository
-public class ItemStorageImpl implements ItemStorage{
-    private final Map<Long, Set<Long>> usersItems=new HashMap<>();
-    private final Map<Long, Item> itemsStorage=new HashMap<>();
+public class ItemStorageImpl implements ItemStorage {
+    private final Map<Long, Set<Long>> usersItems = new HashMap<>();
+    private final Map<Long, Item> itemsStorage = new HashMap<>();
 
     @Override
     public Item addItem(long userId, Item item) {
-        final Set<Long> items=usersItems.computeIfAbsent(userId,k->new HashSet<>());
+        final Set<Long> items = usersItems.computeIfAbsent(userId, k -> new HashSet<>());
         items.add(item.getId());
-        itemsStorage.put(item.getId(),item);
-        log.info("Item "+item+" has been created");
+        itemsStorage.put(item.getId(), item);
+        log.info("Item " + item + " has been created");
         return item;
     }
 
     @Override
     public Optional<Item> getItemById(long userId, long itemId) {
-        if (!itemsStorage.containsKey(itemId)){
-            log.info("could not find the item "+itemId);
+        if (!itemsStorage.containsKey(itemId)) {
+            log.info("could not find the item " + itemId);
             return Optional.empty();
         }
         return Optional.of(itemsStorage.get(itemId));
@@ -59,7 +59,7 @@ public class ItemStorageImpl implements ItemStorage{
 
     @Override
     public List<Item> getUserItems(long userId) {
-        if (!usersItems.containsKey(userId)){
+        if (!usersItems.containsKey(userId)) {
             return null;
         }
         return usersItems.get(userId).stream().map(itemsStorage::get).collect(Collectors.toList());
