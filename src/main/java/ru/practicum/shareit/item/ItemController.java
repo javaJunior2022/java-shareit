@@ -41,8 +41,7 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    List<ItemDto> findItemByName(@RequestHeader("X-Sharer-User-Id") long userId,
-                                 @RequestParam(name = "text") String text) {
-        return text.isBlank() ? Collections.emptyList() : itemService.findItemByName(text);
+    List<ItemDto> findItemByName(@RequestParam(name = "text") String text) {
+        return text.isBlank() ? Collections.emptyList() : itemService.findItemByNameAndDescription(text);
     }
 }

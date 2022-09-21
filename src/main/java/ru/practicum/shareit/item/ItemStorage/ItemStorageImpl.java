@@ -71,7 +71,7 @@ public class ItemStorageImpl implements ItemStorage {
     }
 
     @Override
-    public List<Item> findItemByName(String text) {
+    public List<Item> findItemByNameAndDescription(String text) {
         log.info(" 'findItemByName' search with the string", text);
         return itemsStorage.values().stream().filter(Item::getAvailable)
                 .filter(items -> items.getName().toLowerCase().contains(text.toLowerCase()) ||

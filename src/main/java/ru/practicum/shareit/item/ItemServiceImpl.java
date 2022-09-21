@@ -65,8 +65,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> findItemByName(String text) {
+    public List<ItemDto> findItemByNameAndDescription(String text) {
         log.info("'findItemByName'", text);
-        return itemStorage.findItemByName(text).stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
+        return itemStorage.findItemByNameAndDescription(text).stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 }
