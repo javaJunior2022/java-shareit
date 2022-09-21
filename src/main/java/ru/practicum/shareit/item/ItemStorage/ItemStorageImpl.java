@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class ItemStorageImpl implements ItemStorage {
     private final Map<Long, Set<Long>> usersItems = new HashMap<>();
     private final Map<Long, Item> itemsStorage = new HashMap<>();
-    private long itemCounter=1;
+    private long itemCounter = 1;
 
     @Override
     public Item addItem(long userId, Item item) {

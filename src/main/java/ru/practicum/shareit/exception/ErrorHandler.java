@@ -10,27 +10,27 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ErrorHandler {
     @ExceptionHandler({EmailAlreadyExistException.class})
-    public ResponseEntity<String> EmailAlreadyExistException(EmailAlreadyExistException e) {
+    public ResponseEntity<String> emailAlreadyExistException(EmailAlreadyExistException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({EntityNotFoundException.class})
-    public ResponseEntity<String> EntityNotFoundException(EntityNotFoundException e) {
+    public ResponseEntity<String> entityNotFoundException(EntityNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({ItemNotFoundException.class})
-    public ResponseEntity<String> ItemNotFoundException(ItemNotFoundException e) {
+    public ResponseEntity<String> itemNotFoundException(ItemNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({RequestNotFoundException.class})
-    public ResponseEntity<String> RequestNotFoundException(RequestNotFoundException e) {
+    public ResponseEntity<String> requestNotFoundException(RequestNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({UserNotFoundException.class})
-    public ResponseEntity<String> UserNotFoundException(UserNotFoundException e) {
+    public ResponseEntity<String> userNotFoundException(UserNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
@@ -39,7 +39,6 @@ public class ErrorHandler {
         log.error(e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
 
 }
 

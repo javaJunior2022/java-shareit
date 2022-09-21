@@ -37,23 +37,23 @@ public class RequestStorageImpl implements RequestStorage {
 
     @Override
     public void deleteRequest(long userId, long requestId) {
-        log.info ("'deleteRequest'", userId,requestId);
+        log.info("'deleteRequest'", userId, requestId);
         storage.get(userId).remove(requestId);
     }
 
     @Override
     public Optional<ItemRequest> getRequest(long userId, long requestId) {
-        log.info ("'getRequest'", userId,requestId);
+        log.info("'getRequest'", userId, requestId);
         if (storage.get(userId).containsKey(requestId)) {
             return Optional.of(storage.get(userId).get(requestId));
         }
-        log.info ("'getRequest' is empty", userId,requestId);
+        log.info("'getRequest' is empty", userId, requestId);
         return Optional.empty();
     }
 
     @Override
     public List<ItemRequest> getUserRequests(long userId) {
-        log.info ("'getUserRequests'", userId,userId);
+        log.info("'getUserRequests'", userId, userId);
         if (storage.containsKey(userId)) {
             return new ArrayList<>(storage.get(userId).values());
         }
