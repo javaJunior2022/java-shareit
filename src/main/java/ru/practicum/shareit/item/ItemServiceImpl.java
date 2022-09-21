@@ -31,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto addItem(long userId, ItemDto itemDto) {
         final User user = toUser(userService.getUserById(userId));
-        itemDto.setId(0l);
+        itemDto.setId(0L);
         final ItemRequest itemRequest = itemDto.getRequest() != null ?
                 toRequest(userId, requestService.getRequest(userId, itemDto.getRequest())) : null;
         log.info("'addItem'", userId, itemDto);
