@@ -3,8 +3,8 @@ package ru.practicum.shareit.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.Exception.EmailAlreadyExistException;
-import ru.practicum.shareit.Exception.UserNotFoundException;
+import ru.practicum.shareit.exception.EmailAlreadyExistException;
+import ru.practicum.shareit.exception.UserNotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserStorage;
@@ -21,21 +21,22 @@ import static ru.practicum.shareit.user.UserMapper.toUser;
 public class UserServiceImpl implements UserService {
 
     private final UserStorage userStorage;
-    private long countId = 1;
+
 
     @Override
     public UserDto addUser(UserDto userDto) {
+        log.info("'addUser' ", userDto);
         if (userStorage.emailExistingCheck(userDto.getEmail())) {
             throw new EmailAlreadyExistException(String.format("user with this email %s had been registered earlier",
                     userDto.getEmail()));
         }
-        userDto.setId(countId++);
         final User user = userStorage.addUser(toUser(userDto));
         return convertToDto(user);
     }
 
     @Override
     public UserDto updateUser(long userId, UserDto userDto) {
+        log.info("'updateUser' ", userId, userDto);
         if (userStorage.emailExistingCheck(userDto.getEmail())) {
             throw new EmailAlreadyExistException(String.format("user with this email %s had been registered earlier",
                     userDto.getEmail()));
@@ -47,18 +48,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(long userId) {
+        log.info("'deleteUserById' ", userId);
         userStorage.getUserById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         userStorage.deleteUserById(userId);
     }
 
     @Override
     public UserDto getUserById(long userId) {
+        log.info("'getUserById' ", userId);
         return userStorage.getUserById(userId).map(UserMapper::convertToDto)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     @Override
     public List<UserDto> getUsers() {
+        log.info("'getUsers' ");
         return userStorage.getUsers().stream().map(UserMapper::convertToDto).collect(Collectors.toList());
     }
 

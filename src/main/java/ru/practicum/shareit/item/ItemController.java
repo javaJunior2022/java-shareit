@@ -10,9 +10,7 @@ import ru.practicum.shareit.validation.Update;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
+
 @RestController
 @RequestMapping("/items")
 @AllArgsConstructor

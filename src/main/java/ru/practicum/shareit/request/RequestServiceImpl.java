@@ -2,7 +2,7 @@ package ru.practicum.shareit.request;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.Exception.RequestNotFoundException;
+import ru.practicum.shareit.exception.RequestNotFoundException;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.storage.RequestStorage;
 import ru.practicum.shareit.user.UserService;

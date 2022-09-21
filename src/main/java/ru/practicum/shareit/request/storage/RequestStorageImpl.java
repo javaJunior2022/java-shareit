@@ -18,11 +18,14 @@ public class RequestStorageImpl implements RequestStorage {
         } else {
             storage.put(userId, Map.of(itemRequest.getId(), itemRequest));
         }
+        log.info("'addRequest'", userId, itemRequest);
         return itemRequest;
     }
 
     @Override
     public Optional<ItemRequest> updateRequest(long userId, long requestId, ItemRequest itemRequest) {
+        log.info("'updateRequest'", userId, requestId, itemRequest);
+
         if (storage.get(userId).containsKey(requestId)) {
             if (itemRequest.getDescription() != null) {
                 storage.get(userId).get(requestId).setDescription(itemRequest.getDescription());
@@ -34,19 +37,23 @@ public class RequestStorageImpl implements RequestStorage {
 
     @Override
     public void deleteRequest(long userId, long requestId) {
+        log.info ("'deleteRequest'", userId,requestId);
         storage.get(userId).remove(requestId);
     }
 
     @Override
     public Optional<ItemRequest> getRequest(long userId, long requestId) {
+        log.info ("'getRequest'", userId,requestId);
         if (storage.get(userId).containsKey(requestId)) {
             return Optional.of(storage.get(userId).get(requestId));
         }
+        log.info ("'getRequest' is empty", userId,requestId);
         return Optional.empty();
     }
 
     @Override
     public List<ItemRequest> getUserRequests(long userId) {
+        log.info ("'getUserRequests'", userId,userId);
         if (storage.containsKey(userId)) {
             return new ArrayList<>(storage.get(userId).values());
         }
