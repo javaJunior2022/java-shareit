@@ -8,8 +8,7 @@ create table IF NOT EXISTS users
             unique
 );
 
-alter table users
-    owner to sa;
+
 
 create table IF NOT EXISTS requests
 (
@@ -19,11 +18,12 @@ create table IF NOT EXISTS requests
             references users
             on update cascade on delete cascade,
     description  varchar not null,
-    requestor_id integer not null
+    requestor_id integer not null,
+    created      timestamp
 );
 
 
-create table IF NOT EXISTS  bookings
+create table IF NOT EXISTS bookings
 (
     id         serial
         primary key,
