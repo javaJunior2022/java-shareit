@@ -24,9 +24,9 @@ public class StrategyCurrent implements Strategy {
     }
 
     @Override
-    public List<BookingDto> findBookingByStrategy(Long bookerId, Pageable page) {
+    public List<BookingDto> findBookingByStrategy(Long bookerId) {
         LocalDateTime date = LocalDateTime.now();
-        return bookingRepository.findCurrentBookingsByBookerId(bookerId, date, page).stream()
+        return bookingRepository.findCurrentBookingsByBookerId(bookerId, date).stream()
                 .map(BookingMapper::toBookingDto).collect(Collectors.toList());
     }
 }

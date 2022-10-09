@@ -10,5 +10,5 @@ public interface Strategy {
 
     BookingState getState();
 
-    List<BookingDto> findBookingByStrategy(Long bookerId, Pageable page);
+    List<BookingDto> findBookingByStrategy(Long bookerId);
 }

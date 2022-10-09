@@ -24,8 +24,8 @@ public class StrategyWaiting implements Strategy {
     }
 
     @Override
-    public List<BookingDto> findBookingByStrategy(Long bookerId, Pageable page) {
-        return bookingRepository.findBookingsByBooker_IdAndStatus(bookerId, BookingStatus.WAITING, page)
+    public List<BookingDto> findBookingByStrategy(Long bookerId) {
+        return bookingRepository.findBookingsByBooker_IdAndStatusOrderByStartDesc(bookerId, BookingStatus.WAITING)
                 .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
     }
 }

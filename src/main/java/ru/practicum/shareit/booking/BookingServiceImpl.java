@@ -80,44 +80,44 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getUserBookingByState(long bookerId, String state, int from, int size) {
+    public List<BookingDto> getUserBookingByState(long bookerId, String state) {
         userRepository.findById(bookerId).orElseThrow(() -> new UserNotFoundException(bookerId));
-        return filterByStateForBookerId(bookerId, state.toUpperCase(), makePageParam(from, size));
+        return filterByStateForBookerId(bookerId, state.toUpperCase());
     }
 
     @Override
-    public List<BookingDto> getBookingForUsersItem(long ownerId, String state, int from, int size) {
+    public List<BookingDto> getBookingForUsersItem(long ownerId, String state) {
         userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId));
-        return filterByStateForItemOwnerId(ownerId, state.toUpperCase(), makePageParam(from, size));
+        return filterByStateForItemOwnerId(ownerId, state.toUpperCase());
     }
 
-    private List<BookingDto> filterByStateForBookerId(long bookerId, String state, Pageable page) {
+    private List<BookingDto> filterByStateForBookerId(long bookerId, String state) {
         BookingState bookingState = getBookingState(state);
         Strategy strategy = strategyFactory.findStrategy(bookingState);
-        return strategy.findBookingByStrategy(bookerId, page);
+        return strategy.findBookingByStrategy(bookerId);
     }
 
-    private List<BookingDto> filterByStateForItemOwnerId(Long ownerId, String state, Pageable page) {
+    private List<BookingDto> filterByStateForItemOwnerId(Long ownerId, String state) {
         LocalDateTime date = LocalDateTime.now();
         BookingState bookingState = getBookingState(state);
         List<Booking> list;
         switch (bookingState) {
             case CURRENT:
-                list = bookingRepository.findCurrentBookingsByItemOwnerId(ownerId, date, page);
+                list = bookingRepository.findCurrentBookingsByItemOwnerIdOrderByStartDesc(ownerId, date);
                 break;
             case PAST:
-                list = bookingRepository.findBookingsByItem_Owner_IdAndEndBefore(ownerId, date, page);
+                list = bookingRepository.findBookingsByItem_Owner_IdAndEndBeforeOrderByStartDesc(ownerId, date);
                 break;
             case FUTURE:
-                list = bookingRepository.findBookingsByItem_Owner_IdAndStartAfter(ownerId, date, page);
+                list = bookingRepository.findBookingsByItem_Owner_IdAndStartAfterOrderByStartDesc(ownerId, date);
                 break;
             case WAITING:
             case REJECTED:
-                list = bookingRepository.findBookingsByItem_Owner_IdAndStatus(ownerId,
-                        BookingStatus.valueOf(state), page);
+                list = bookingRepository.findBookingsByItem_Owner_IdAndStatusOrderByStartDesc(ownerId,
+                        BookingStatus.valueOf(state));
                 break;
             default:
-                list = bookingRepository.findBookingsByItem_Owner_Id(ownerId, page);
+                list = bookingRepository.findBookingsByItem_Owner_IdOrderByStartDesc(ownerId);
         }
         return list.stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
     }
@@ -130,12 +130,4 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    public static Pageable makePageParam(int from, int size) {
-        if (from < 0 || size < 1) {
-            throw new PaginationParametersException("-");
-        }
-        int page = from / size;
-        Sort sort = Sort.by("start").descending();
-        return PageRequest.of(page, size, sort);
-    }
 }

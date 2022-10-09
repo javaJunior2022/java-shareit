@@ -27,24 +27,24 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     Optional<Booking> findFirstByItem_IdAndBooker_IdAndEndBefore(long itemId, long bookerId, LocalDateTime date);
 
     @Query("from Booking b where b.booker.id=?1 and (?2 between b.start and b.end)")
-    List<Booking> findCurrentBookingsByBookerId(long bookerId, LocalDateTime date, Pageable pageable);
+    List<Booking> findCurrentBookingsByBookerId(long bookerId, LocalDateTime date);
 
-    List<Booking> findBookingsByBooker_IdAndStartAfter(Long bookerId, LocalDateTime date, Pageable pageable);
+    List<Booking> findBookingsByBooker_IdAndStartAfterOrderByStartDesc(Long bookerId, LocalDateTime date);
 
-    List<Booking> findBookingsByBooker_IdAndEndBefore(Long bookerId, LocalDateTime date, Pageable pageable);
+    List<Booking> findBookingsByBooker_IdAndEndBeforeOrderByStartDesc(Long bookerId, LocalDateTime date);
 
-    List<Booking> findBookingsByBooker_IdAndStatus(Long bookerId, BookingStatus status, Pageable page);
+    List<Booking> findBookingsByBooker_IdAndStatusOrderByStartDesc(Long bookerId, BookingStatus status);
 
-    List<Booking> findAllByBooker_Id(long userId, Pageable pageable);
+    List<Booking> findAllByBooker_IdOrderByStartDesc(long userId);
 
     @Query("from Booking b where b.item.owner.id=?1 and (?2 between b.start and b.end)")
-    List<Booking> findCurrentBookingsByItemOwnerId(long ownerId, LocalDateTime date, Pageable pageable);
+    List<Booking> findCurrentBookingsByItemOwnerIdOrderByStartDesc(long ownerId, LocalDateTime date);
 
-    List<Booking> findBookingsByItem_Owner_IdAndStartAfter(Long ownerId, LocalDateTime date, Pageable pageable);
+    List<Booking> findBookingsByItem_Owner_IdAndStartAfterOrderByStartDesc(Long ownerId, LocalDateTime date);
 
-    List<Booking> findBookingsByItem_Owner_IdAndEndBefore(Long bookerId, LocalDateTime date, Pageable pageable);
+    List<Booking> findBookingsByItem_Owner_IdAndEndBeforeOrderByStartDesc(Long bookerId, LocalDateTime date);
 
-    List<Booking> findBookingsByItem_Owner_IdAndStatus(Long bookerId, BookingStatus status, Pageable page);
+    List<Booking> findBookingsByItem_Owner_IdAndStatusOrderByStartDesc(Long bookerId, BookingStatus status);
 
-    List<Booking> findBookingsByItem_Owner_Id(long userId, Pageable pageable);
+    List<Booking> findBookingsByItem_Owner_IdOrderByStartDesc(long userId);
 }

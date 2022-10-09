@@ -23,10 +23,11 @@ public class StrategyPast implements Strategy {
         return BookingState.PAST;
     }
 
+
     @Override
-    public List<BookingDto> findBookingByStrategy(Long bookerId, Pageable page) {
+    public List<BookingDto> findBookingByStrategy(Long bookerId) {
         LocalDateTime date = LocalDateTime.now();
-        return bookingRepository.findBookingsByBooker_IdAndEndBefore(bookerId, date, page)
+        return bookingRepository.findBookingsByBooker_IdAndEndBeforeOrderByStartDesc(bookerId, date)
                 .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
     }
 }

@@ -24,8 +24,8 @@ public class StrategyRejected implements Strategy {
     }
 
     @Override
-    public List<BookingDto> findBookingByStrategy(Long bookerId, Pageable page) {
-        return bookingRepository.findBookingsByBooker_IdAndStatus(bookerId, BookingStatus.REJECTED, page)
+    public List<BookingDto> findBookingByStrategy(Long bookerId) {
+        return bookingRepository.findBookingsByBooker_IdAndStatusOrderByStartDesc(bookerId, BookingStatus.REJECTED)
                 .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
     }
 }
