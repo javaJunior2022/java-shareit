@@ -3,20 +3,21 @@ package ru.practicum.shareit.user;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exception.EmailAlreadyExistException;
-import ru.practicum.shareit.exception.UserNotFoundException;
-import ru.practicum.shareit.user.dto.UserDto;
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.exceptions.EmailAlreadyExistException;
+import ru.practicum.shareit.exceptions.UserNotFoundException;
+import ru.practicum.shareit.user.UserMapper;
+import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.model.UserDto;
 import ru.practicum.shareit.user.storage.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@Slf4j
 @Service
 @Transactional
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -36,45 +37,39 @@ public class UserServiceImpl implements UserService {
         } catch (RuntimeException e) {
             throw new EmailAlreadyExistException(userDto.getEmail());
         }
-
-        return UserMapper.convertToDto(user);
+        return UserMapper.toDto(user);
     }
 
     @Override
-    public UserDto updateUser(long userId, UserDto userDto) {
+    public UserDto updateUser(Long userId, UserDto userDto) {
         log.info("'updateUser' ", userId, userDto);
-
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+        if (userDto.getEmail() != null && userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new EmailAlreadyExistException(userDto.getEmail());
         }
-
-        if (!userRepository.findById(userId).isPresent()) {
-            throw new UserNotFoundException(userId);
-        }
-
-        User user = UserMapper.convertFromDto(userRepository.findById(userId).get(), userDto);
-        userDto.setId(userId);
-        userRepository.save(user);
-
-        return UserMapper.convertToDto(user);
+        return userRepository.findById(userId).map(user -> {
+            User user1 = UserMapper.updateFromDto(user, userDto);
+            userRepository.save(user1);
+            return UserMapper.toDto(user1);
+        }).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     @Override
-    public void deleteUserById(long userId) {
+    public void deleteUserById(Long userId) {
         log.info("'deleteUserById' ", userId);
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        userRepository.delete(userRepository.findById(userId).get());
+        userRepository.deleteById(userId);
     }
 
     @Override
-    public UserDto getUserById(long userId) {
+    public UserDto getUserById(Long userId) {
         log.info("'getUserById' ", userId);
-        return userRepository.findById(userId).map(UserMapper::convertToDto).orElseThrow(() -> new UserNotFoundException(userId));
+        return userRepository.findById(userId).map(UserMapper::toDto)
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     @Override
-    public List<UserDto> getUsers() {
+    public List<UserDto> getAllUSer() {
         log.info("'getUsers' ");
-        return userRepository.findAll().stream().map(UserMapper::convertToDto).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(UserMapper::toDto).collect(Collectors.toList());
     }
 }

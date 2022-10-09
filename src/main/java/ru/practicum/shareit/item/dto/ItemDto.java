@@ -1,21 +1,30 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import ru.practicum.shareit.validation.Create;
+import ru.practicum.shareit.booking.dto.BookingShort;
+import ru.practicum.shareit.comments.CommentDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
 public class ItemDto {
+
     private Long id;
-    @NotBlank(groups = {Create.class})
+
     private String name;
-    @NotBlank(groups = {Create.class})
+
     private String description;
-    @NotNull(groups = {Create.class})
+
     private Boolean available;
+
     private Long request;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private BookingShort lastBooking;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private BookingShort nextBooking;
+
+    List<CommentDto> comments;
 }

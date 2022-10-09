@@ -1,19 +1,24 @@
 package ru.practicum.shareit.item.model;
 
-import lombok.Data;
-import ru.practicum.shareit.request.model.ItemRequest;
+import lombok.*;
+import ru.practicum.shareit.requests.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
 
-
-@Data
+/**
+ * // Item class in storage .
+ */
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"id"})
+@ToString
 @Entity
 @Table(name = "items")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -21,15 +26,14 @@ public class Item {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "is_available")
-    private Boolean available;
-
     @ManyToOne(optional = false)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "user_id")
     private User owner;
 
-    @OneToOne
-    @JoinColumn(name = "request_id")
-    private ItemRequest itemRequest;
+    @Column(name = "available")
+    private Boolean available;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id")
+    private ItemRequest request;
 }

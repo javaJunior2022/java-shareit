@@ -1,6 +1,5 @@
 package ru.practicum.shareit;
 
-
 import javax.persistence.AttributeConverter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -10,6 +9,7 @@ public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime,
     public Timestamp convertToDatabaseColumn(LocalDateTime attribute) {
         return attribute != null ? Timestamp.valueOf(attribute) : null;
     }
+
     @Override
     public LocalDateTime convertToEntityAttribute(Timestamp dbData) {
         return dbData != null ? dbData.toLocalDateTime() : null;
