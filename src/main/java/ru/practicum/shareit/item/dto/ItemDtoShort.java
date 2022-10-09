@@ -8,9 +8,6 @@ import ru.practicum.shareit.validation.Update;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-/**
- * // TODO .
- */
 @Data
 public class ItemDtoShort {
 

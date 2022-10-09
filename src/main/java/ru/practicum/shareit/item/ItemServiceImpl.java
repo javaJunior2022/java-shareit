@@ -8,10 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingShort;
 import ru.practicum.shareit.booking.storage.BookingRepository;
-import ru.practicum.shareit.exceptions.CommentCreationException;
-import ru.practicum.shareit.exceptions.ItemNotFoundException;
-import ru.practicum.shareit.exceptions.RequestNotFoundException;
-import ru.practicum.shareit.exceptions.UserNotFoundException;
+import ru.practicum.shareit.exceptions.*;
 import ru.practicum.shareit.comments.Comment;
 import ru.practicum.shareit.comments.CommentDto;
 import ru.practicum.shareit.comments.CommentRepository;
@@ -19,8 +16,6 @@ import ru.practicum.shareit.item.dto.ItemDtoShort;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemRepository;
-import ru.practicum.shareit.requests.model.ItemRequest;
-import ru.practicum.shareit.requests.storage.RequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserRepository;
 
@@ -40,8 +35,6 @@ public class ItemServiceImpl implements ItemService {
 
     private final UserRepository userRepository;
 
-    private final RequestRepository requestRepository;
-
     @Lazy
     private final BookingRepository bookingRepository;
 
@@ -53,12 +46,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDtoShort addItem(Long userId, ItemDtoShort itemDtoShort) {
         log.info("'addItem'", userId, itemDtoShort);
         User owner = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        ItemRequest itemRequest = null;
-        if (itemDtoShort.getRequestId() != null) {
-            itemRequest = requestRepository.findById(itemDtoShort.getRequestId())
-                    .orElseThrow(() -> new RequestNotFoundException(itemDtoShort.getRequestId()));
-        }
-        Item item = itemRepository.save(toItem(owner, itemDtoShort, itemRequest));
+        Item item = itemRepository.save(toItem(owner, itemDtoShort));
         log.info(item.toString());
         return toItemDto(item);
     }
@@ -84,15 +72,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getUserItems(long userId, int from, int size) {
-        log.info("'getUserItems'", userId);
+    public List<ItemDto> getUserItems(long userId) {
         List<Item> items = itemRepository.findAllByOwner_IdOrderById(userId);
         return items.stream().map(i -> toResponseItem(i, getLastBooking(i.getId(), i.getOwner().getId()),
                 getNextBooking(i.getId(), i.getOwner().getId()), getComments(i.getId()))).collect(Collectors.toList());
     }
 
     @Override
-    public List<ItemDtoShort> findItemByName(String text, int from, int size) {
+    public List<ItemDtoShort> findItemByName(String text) {
         log.info("'findItemByName'", text);
 
         return itemRepository.search(text).stream().map(ItemMapper::toItemDto)

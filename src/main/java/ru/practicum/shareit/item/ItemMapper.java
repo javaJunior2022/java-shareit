@@ -9,7 +9,6 @@ import ru.practicum.shareit.comments.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDtoShort;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.requests.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
@@ -18,12 +17,11 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemMapper {
 
-    public static Item toItem(User owner, ItemDtoShort itemDtoShort, @Nullable ItemRequest itemRequest) {
+    public static Item toItem(User owner, ItemDtoShort itemDtoShort) {
         Item item = new Item();
         item.setName(itemDtoShort.getName());
         item.setDescription(itemDtoShort.getDescription());
         item.setOwner(owner);
-        item.setRequest(itemRequest == null ? null : itemRequest);
         item.setAvailable(itemDtoShort.getAvailable());
         return item;
     }
@@ -34,7 +32,6 @@ public class ItemMapper {
         itemDtoShort.setName(item.getName());
         itemDtoShort.setDescription(item.getDescription());
         itemDtoShort.setAvailable(item.getAvailable());
-        itemDtoShort.setRequestId(item.getRequest() == null ? null : item.getRequest().getId());
         return itemDtoShort;
     }
 
@@ -45,7 +42,6 @@ public class ItemMapper {
         itemDto.setName(item.getName());
         itemDto.setDescription(item.getDescription());
         itemDto.setAvailable(item.getAvailable());
-        itemDto.setRequest(item.getRequest() == null ? null : item.getRequest().getId());
         itemDto.setLastBooking(last == null ? null : last);
         itemDto.setNextBooking(next == null ? null : next);
         itemDto.setComments(comments);
