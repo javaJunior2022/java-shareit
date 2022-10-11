@@ -4,8 +4,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 import ru.practicum.shareit.booking.dto.BookingShort;
-import ru.practicum.shareit.comments.Comment;
-import ru.practicum.shareit.comments.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDtoShort;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;

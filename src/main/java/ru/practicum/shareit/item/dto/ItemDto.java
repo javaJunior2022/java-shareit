@@ -3,7 +3,7 @@ package ru.practicum.shareit.item.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import ru.practicum.shareit.booking.dto.BookingShort;
-import ru.practicum.shareit.comments.CommentDto;
+import ru.practicum.shareit.item.CommentDto;
 
 import java.util.List;
 
@@ -26,5 +26,5 @@ public class ItemDto {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private BookingShort nextBooking;
 
-    List<CommentDto> comments;
+    private List<CommentDto> comments;
 }

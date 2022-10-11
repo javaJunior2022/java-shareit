@@ -11,9 +11,6 @@ import ru.practicum.shareit.user.model.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * // TODO .
- */
 @Data
 @Entity
 @Table(name = "bookings")
@@ -37,7 +34,7 @@ public class Booking {
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "booker_id")  //указывается имя поля с id в таблице booker, по которой будет связь с user
+    @JoinColumn(name = "booker_id")
     private User booker;
 
     @Enumerated(EnumType.ORDINAL)

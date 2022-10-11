@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item;
 
-import ru.practicum.shareit.comments.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDtoShort;
 import ru.practicum.shareit.item.dto.ItemDto;
 

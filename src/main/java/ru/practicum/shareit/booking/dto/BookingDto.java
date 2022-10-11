@@ -1,10 +1,8 @@
 package ru.practicum.shareit.booking.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import ru.practicum.shareit.booking.BookingStatus;
-import ru.practicum.shareit.item.dto.ItemDtoShort;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
@@ -21,7 +19,15 @@ public class BookingDto {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime end;
 
-    private ItemDtoShort item;
+    private Item item;
+
+    @Data
+    @AllArgsConstructor
+    public static class Item {
+        private Long id;
+        private String name;
+
+    }
 
     private User booker;
 

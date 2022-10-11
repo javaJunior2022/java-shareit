@@ -1,4 +1,4 @@
-package ru.practicum.shareit.comments;
+package ru.practicum.shareit.item;
 
 import lombok.Data;
 import ru.practicum.shareit.LocalDateTimeConverter;
