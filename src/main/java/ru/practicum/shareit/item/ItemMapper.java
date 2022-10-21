@@ -7,6 +7,7 @@ import ru.practicum.shareit.booking.dto.BookingShort;
 import ru.practicum.shareit.item.dto.ItemDtoShort;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
@@ -15,12 +16,13 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemMapper {
 
-    public static Item toItem(User owner, ItemDtoShort itemDtoShort) {
+    public static Item toItem(User owner, ItemDtoShort itemDtoShort, @Nullable ItemRequest itemRequest) {
         Item item = new Item();
         item.setName(itemDtoShort.getName());
         item.setDescription(itemDtoShort.getDescription());
         item.setOwner(owner);
         item.setAvailable(itemDtoShort.getAvailable());
+        item.setRequest(itemRequest == null ? null : itemRequest);
         return item;
     }
 
@@ -30,6 +32,7 @@ public class ItemMapper {
         itemDtoShort.setName(item.getName());
         itemDtoShort.setDescription(item.getDescription());
         itemDtoShort.setAvailable(item.getAvailable());
+        itemDtoShort.setRequestId(item.getRequest() == null ? null : item.getRequest().getId());
         return itemDtoShort;
     }
 

@@ -13,3 +13,4 @@ ALTER SEQUENCE items_id_seq  RESTART WITH 1;
 ALTER SEQUENCE users_id_seq  RESTART WITH 1;
 ALTER SEQUENCE bookings_id_seq  RESTART WITH 1;
 ALTER SEQUENCE comments_id_seq  RESTART WITH 1;
+alter sequence requests_id_seq restart with 1;

@@ -3,6 +3,9 @@ package ru.practicum.shareit.booking;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.strategy.BookingState;
@@ -77,44 +80,52 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getUserBookingByState(long bookerId, String state) {
+    public List<BookingDto> getUserBookingByState(long bookerId, String state, int from, int size) {
         userRepository.findById(bookerId).orElseThrow(() -> new UserNotFoundException(bookerId));
-        return filterByStateForBookerId(bookerId, state.toUpperCase());
+        return filterByStateForBookerId(bookerId, state.toUpperCase(), paginationParameters(from, size));
+    }
+    public static Pageable paginationParameters(int from, int size) {
+        if (from < 0 || size < 1) {
+            throw new PaginationParametersException("error");
+        }
+        int page = from / size;
+        Sort sort = Sort.by("id").ascending();
+        return PageRequest.of(page, size, sort);
     }
 
     @Override
-    public List<BookingDto> getBookingForUsersItem(long ownerId, String state) {
+    public List<BookingDto> getBookingForUsersItem(long ownerId, String state, int from, int size) {
         userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId));
-        return filterByStateForItemOwnerId(ownerId, state.toUpperCase());
+        return filterByStateForItemOwnerId(ownerId, state.toUpperCase(), paginationParameters(from, size));
     }
 
-    private List<BookingDto> filterByStateForBookerId(long bookerId, String state) {
+    private List<BookingDto> filterByStateForBookerId(long bookerId, String state, Pageable pageable) {
         BookingState bookingState = getBookingState(state);
         Strategy strategy = strategyFactory.findStrategy(bookingState);
-        return strategy.findBookingByStrategy(bookerId);
+        return strategy.findBookingByStrategy(bookerId, pageable);
     }
 
-    private List<BookingDto> filterByStateForItemOwnerId(Long ownerId, String state) {
+    private List<BookingDto> filterByStateForItemOwnerId(Long ownerId, String state,Pageable page) {
         LocalDateTime date = LocalDateTime.now();
         BookingState bookingState = getBookingState(state);
         List<Booking> list;
         switch (bookingState) {
             case CURRENT:
-                list = bookingRepository.findCurrentBookingsByItemOwnerIdOrderByStartDesc(ownerId, date);
+                list = bookingRepository.findCurrentBookingsByItemOwnerIdOrderByStartDesc(ownerId, date,page);
                 break;
             case PAST:
-                list = bookingRepository.findBookingsByItem_Owner_IdAndEndBeforeOrderByStartDesc(ownerId, date);
+                list = bookingRepository.findBookingsByItem_Owner_IdAndEndBeforeOrderByStartDesc(ownerId, date,page);
                 break;
             case FUTURE:
-                list = bookingRepository.findBookingsByItem_Owner_IdAndStartAfterOrderByStartDesc(ownerId, date);
+                list = bookingRepository.findBookingsByItem_Owner_IdAndStartAfterOrderByStartDesc(ownerId, date,page);
                 break;
             case WAITING:
             case REJECTED:
                 list = bookingRepository.findBookingsByItem_Owner_IdAndStatusOrderByStartDesc(ownerId,
-                        BookingStatus.valueOf(state));
+                        BookingStatus.valueOf(state),page);
                 break;
             default:
-                list = bookingRepository.findBookingsByItem_Owner_IdOrderByStartDesc(ownerId);
+                list = bookingRepository.findBookingsByItem_Owner_IdOrderByStartDesc(ownerId,page);
         }
         return list.stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
     }
