@@ -84,6 +84,7 @@ public class BookingServiceImpl implements BookingService {
         userRepository.findById(bookerId).orElseThrow(() -> new UserNotFoundException(bookerId));
         return filterByStateForBookerId(bookerId, state.toUpperCase(), paginationParameters(from, size));
     }
+
     public static Pageable paginationParameters(int from, int size) {
         if (from < 0 || size < 1) {
             throw new PaginationParametersException("error");
@@ -105,27 +106,27 @@ public class BookingServiceImpl implements BookingService {
         return strategy.findBookingByStrategy(bookerId, pageable);
     }
 
-    private List<BookingDto> filterByStateForItemOwnerId(Long ownerId, String state,Pageable page) {
+    private List<BookingDto> filterByStateForItemOwnerId(Long ownerId, String state, Pageable page) {
         LocalDateTime date = LocalDateTime.now();
         BookingState bookingState = getBookingState(state);
         List<Booking> list;
         switch (bookingState) {
             case CURRENT:
-                list = bookingRepository.findCurrentBookingsByItemOwnerIdOrderByStartDesc(ownerId, date,page);
+                list = bookingRepository.findCurrentBookingsByItemOwnerIdOrderByStartDesc(ownerId, date, page);
                 break;
             case PAST:
-                list = bookingRepository.findBookingsByItem_Owner_IdAndEndBeforeOrderByStartDesc(ownerId, date,page);
+                list = bookingRepository.findBookingsByItem_Owner_IdAndEndBeforeOrderByStartDesc(ownerId, date, page);
                 break;
             case FUTURE:
-                list = bookingRepository.findBookingsByItem_Owner_IdAndStartAfterOrderByStartDesc(ownerId, date,page);
+                list = bookingRepository.findBookingsByItem_Owner_IdAndStartAfterOrderByStartDesc(ownerId, date, page);
                 break;
             case WAITING:
             case REJECTED:
                 list = bookingRepository.findBookingsByItem_Owner_IdAndStatusOrderByStartDesc(ownerId,
-                        BookingStatus.valueOf(state),page);
+                        BookingStatus.valueOf(state), page);
                 break;
             default:
-                list = bookingRepository.findBookingsByItem_Owner_IdOrderByStartDesc(ownerId,page);
+                list = bookingRepository.findBookingsByItem_Owner_IdOrderByStartDesc(ownerId, page);
         }
         return list.stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
     }

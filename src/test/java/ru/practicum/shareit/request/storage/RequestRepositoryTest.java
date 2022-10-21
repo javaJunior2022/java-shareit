@@ -17,6 +17,7 @@ import static org.hamcrest.Matchers.*;
 import static ru.practicum.shareit.TestUtil.makeItemRequest;
 
 import java.util.List;
+
 @DataJpaTest
 @Sql(scripts = "/add_users.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class RequestRepositoryTest {
