@@ -2,6 +2,7 @@ package ru.practicum.shareit.booking.strategy.strategyimpl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -22,8 +23,8 @@ public class StrategyAll implements Strategy {
     }
 
     @Override
-    public List<BookingDto> findBookingByStrategy(Long bookerId) {
-        return bookingRepository.findAllByBooker_IdOrderByStartDesc(bookerId).stream()
+    public List<BookingDto> findBookingByStrategy(Long bookerId, Pageable pageable) {
+        return bookingRepository.findAllByBooker_IdOrderByStartDesc(bookerId, pageable).stream()
                 .map(BookingMapper::toBookingDto).collect(Collectors.toList());
     }
 }

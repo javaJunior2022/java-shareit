@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking.strategy.strategyimpl;
 
+import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.strategy.BookingState;
 
@@ -9,5 +10,5 @@ public interface Strategy {
 
     BookingState getState();
 
-    List<BookingDto> findBookingByStrategy(Long bookerId);
+    List<BookingDto> findBookingByStrategy(Long bookerId, Pageable pageable);
 }
