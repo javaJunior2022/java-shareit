@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.PaginationParametersException;
 import ru.practicum.shareit.exceptions.RequestNotFoundException;
 import ru.practicum.shareit.exceptions.UserNotFoundException;
-import ru.practicum.shareit.request.RequestMapper;
-import ru.practicum.shareit.request.RequestService;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestDtoEntry;
 import ru.practicum.shareit.request.model.ItemRequest;
