@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = DateChecker.class)
 public @interface CheckBookingDate {
 
-    String message() default "Недопустимые даты аренды";
+    String message() default "dates error";
 
     Class<?>[] groups() default {};
 
