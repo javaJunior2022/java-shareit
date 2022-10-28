@@ -8,10 +8,12 @@ import javax.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.validation.CheckBookingDate;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@CheckBookingDate
 public class BookingDtoEntry {
     private long itemId;
     @FutureOrPresent

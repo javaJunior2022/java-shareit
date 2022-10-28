@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.validation.Create;
 import ru.practicum.shareit.validation.Update;
 
-import java.util.List;
 
 @Controller
 @AllArgsConstructor(onConstructor_ = @Autowired)
@@ -33,15 +32,14 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUserById(@PathVariable Long userId) {
+    public ResponseEntity<Object> deleteUserById(@PathVariable Long userId) {
         log.info("deleteUserById userId {}", userId);
-        userClient.deleteUserById(userId);
+        return userClient.delete(userId);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<Object> getUserById(@PathVariable Long userId) {
-        log.info("getUserById userId {}", userId);
-        return userClient.getUserById(userId);
+        return userClient.getUser(userId);
     }
 
     @GetMapping
