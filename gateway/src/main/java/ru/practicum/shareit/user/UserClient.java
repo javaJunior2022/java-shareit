@@ -33,11 +33,11 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getUser(long id) {
-        return get("/"+ id);
+        return get("/" + id);
     }
 
     public ResponseEntity<Object> delete(long userId) {
-        return delete("/"+ userId);
+        return delete("/" + userId);
     }
 
     public ResponseEntity<Object> getAllUsers() {
