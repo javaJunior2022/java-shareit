@@ -12,7 +12,7 @@ import ru.practicum.shareit.client.BaseClient;
 import java.util.Map;
 
 @Service
-public class    ItemClient extends BaseClient {
+public class ItemClient extends BaseClient {
     private static final String API_PREFIX = "/items";
 
     @Autowired
@@ -45,7 +45,7 @@ public class    ItemClient extends BaseClient {
         return get("?from={from}&size={size}", userId, parameters);
     }
 
-    ResponseEntity<Object> findItemByName(long userId, String text, int from, int size) {
+    public ResponseEntity<Object> findItemByName(long userId, String text, int from, int size) {
         Map<String, Object> parameters = Map.of(
                 "text", text,
                 "from", from,
